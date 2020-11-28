@@ -27,6 +27,7 @@
     "@angular/platform-server": "~11.0.1",
     "@angular/router": "~11.0.1",
     "@nguniversal/express-engine": "^11.0.0",
+    "dayjs": "^1.9.6",
     "express": "^4.15.2",
     "material-community-components": "^10.0.0",
     "rxjs": "~6.6.0",

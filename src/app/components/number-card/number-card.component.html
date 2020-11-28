@@ -1,0 +1,8 @@
+<mat-card class="mat-elevation-z2">
+    <div class="mat-subheading-1">{{item?.title}}</div>
+    <div class="mat-display-1">{{item?.count}}</div>
+    <div  class="mat-caption">
+        <span *ngIf="showDifference; else elseBlock"><span  [class.success]="isPositive" [class.error]="isNegative">{{ item?.difference }}</span> since yesterday</span>
+        <ng-template #elseBlock>&nbsp;</ng-template>
+    </div>
+</mat-card>
