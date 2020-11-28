@@ -1,14 +1,12 @@
 FROM node:14.15.1
 
-COPY package.json .
-
-RUN npm install
+WORKDIR /app
 
 COPY . .
 
-RUN npm run build:ssr
+RUN npm install
 
-RUN rm -rf .npmrc
+RUN npm run build:ssr
 
 EXPOSE 44795
 
