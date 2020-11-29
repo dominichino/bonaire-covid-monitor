@@ -1,6 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
-@import './material-community-components';
-@import './styles/color';
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import './styles/1-settings/colors';
+@import './styles/2-tools/colors';
+@import './styles/3-generic/material-community-components';
+@import './styles/4-elements/elements';
+@import './styles/5-objects/colors';
+@import './styles/7-utils/utils';

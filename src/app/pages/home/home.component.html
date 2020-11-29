@@ -1,25 +1,26 @@
 <app-simple>
-    <div class="page-container">
-        <div>
-            <h2>Covid-19 numbers</h2>
-            <div>{{now}}</div>
-            <div class="repeat-items">
-                <ng-container *ngFor="let item of items">
-                    <app-number-card [item]="item"></app-number-card>
-                </ng-container>
-            </div>
-        </div>
-        <div>
-            <h2>Cases over time</h2>
-        </div>
-        <div>
-            <h2>Held in Hospital</h2>
-        </div>
-        <div>
-            <h2>Deaths per day</h2>
-        </div>
-        <div>
-            <h2>Age of deceased</h2>
-        </div>
-    </div>
+  <section>
+    <h2>Covid-19 numbers</h2>
+    <div>{{ now }}</div>
+    <app-number-cards
+      [current]="current"
+      [previous]="previous"
+    ></app-number-cards>
+  </section>
+
+  <div>
+    <h2>Cases over time</h2>
+  </div>
+
+  <div>
+    <h2>Held in Hospital</h2>
+  </div>
+
+  <div>
+    <h2>Deaths per day</h2>
+  </div>
+
+  <div>
+    <h2>Age of deceased</h2>
+  </div>
 </app-simple>

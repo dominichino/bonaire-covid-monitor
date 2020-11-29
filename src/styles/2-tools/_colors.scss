@@ -1,0 +1,25 @@
+@mixin color-success {
+    color: $success;
+}
+@mixin color-warning {
+    color: $warning;
+}
+@mixin color-error {
+    color: $error;
+}
+@mixin color-info {
+    color: $info;
+}
+
+@mixin bg-color-success {
+    color: $success;
+}
+@mixin bg-color-warning {
+    color: $warning;
+}
+@mixin bg-color-error {
+    color: $error;
+}
+@mixin bg-color-info {
+    color: $info;
+}

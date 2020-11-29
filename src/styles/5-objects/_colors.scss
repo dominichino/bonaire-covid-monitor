@@ -1,0 +1,25 @@
+.success {
+    @include color-success();
+}
+.warning {
+    @include color-warning();
+}
+.error {
+    @include color-error();
+}
+.info {
+    @include color-info();
+}
+
+.bg-success {
+    @include bg-color-success();
+}
+.bg-warning {
+    @include bg-color-warning();
+}
+.bg-error {
+    @include bg-color-error();
+}
+.bg-info {
+    @include bg-color-info();
+}
