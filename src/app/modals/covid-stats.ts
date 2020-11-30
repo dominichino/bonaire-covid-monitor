@@ -9,8 +9,6 @@ export interface CovidStats {
   negative: string | number;
   quarantined: string | number;
   deaths: string | number;
-
-  hasOwnProperty<T>(this: T, v: any): v is keyof T;
 }
 
 // Get a human readable name from CovidStats keys
@@ -27,3 +25,16 @@ export function getCovidStatDisplayName(key: string) {
       return key;
   }
 }
+
+export const covidStatsDefault: CovidStats = {
+  lastUpdated: '',
+  date: '',
+  active: 0,
+  inHospital: 0,
+  positive: 0,
+  recovered: 0,
+  totalTested: 0,
+  negative: 0,
+  quarantined: 0,
+  deaths: 0,
+};

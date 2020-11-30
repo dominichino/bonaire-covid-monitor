@@ -1,52 +1,75 @@
 import { Component, OnInit } from '@angular/core';
-import { data } from '../../../assets/testdata';
-import * as dayjs from "dayjs";
+import {
+  MatDatepicker,
+  MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import * as dayjs from 'dayjs';
+import { ApiService } from '../../services/api.service';
+import { sortCovidStatsByDate } from '../..//utils/sort-by-date';
+import { API_DATE_FORMAT, API_REQUEST_DATE_FORMAT } from '../../utils/globals';
+import { CovidStats, covidStatsDefault } from '../../modals/covid-stats';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  current = new BehaviorSubject<CovidStats>(covidStatsDefault);
+  previous = new BehaviorSubject<CovidStats>(covidStatsDefault);
 
-  readonly keys = [
-    'active',
-    'inHospital',
-    'positive',
-    'recovered',
-    'totaltested',
-    'negative',
-    'quarantined',
-    'deaths'
-  ];
-  private previous: any = data[3];
-  private current: any = data[0];
-  
-  items: any[] = [];
+  minDate = dayjs().year(2020).startOf('year').toDate();
+  maxDate = dayjs().endOf('day').toDate();
+  date = new FormControl(this.maxDate);
 
-  now = dayjs().format('DD MMMM YYYY');
-
-  constructor() { }
+  constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    for (const key of this.keys) {
-      let count: any = '-';
-      let difference: any = '-';
-      
-      if (typeof this.current[key] === 'string' || typeof this.current[key] === 'number') {
-        count = parseInt(this.current[key])
-        if (typeof this.previous[key] === 'string' || typeof this.previous[key] === 'number') {
-          difference = parseInt(this.current[key]) - parseInt(this.previous[key])
-        }
-      }
+    this.getNumbers(this.date.value);
+  }
 
-      const temp = {
-        title: key.toUpperCase(),
-        count: count,
-        difference: difference
-      }
-      this.items.push(temp)
+  // TODO: debounce
+  dateChanged(event: MatDatepickerInputEvent<Date>) {
+    if (typeof event.value === 'object') {
+      this.date.setValue(event.value);
+      this.getNumbers(event.value);
     }
   }
 
+  nextDate() {
+    const nextDate = dayjs(this.date.value).add(1, 'day');
+    if (nextDate.isBefore(this.maxDate)) {
+      this.date.setValue(nextDate.toDate());
+      this.getNumbers(nextDate.toDate());
+    }
+  }
+
+  previousDate(picker: MatDatepicker<Date>) {
+    const previousDate = dayjs(this.date.value).subtract(1, 'day');
+    if (previousDate.isAfter(this.minDate)) {
+      this.date.setValue(previousDate.toDate());
+      this.getNumbers(previousDate.toDate());
+    }
+  }
+
+  private getNumbers(date: Date) {
+    const currentDate = dayjs(date).format(API_REQUEST_DATE_FORMAT);
+    const previousDate = dayjs(date)
+      .subtract(1, 'day')
+      .format(API_REQUEST_DATE_FORMAT);
+
+    this.api
+      .getByDate(currentDate)
+      .pipe(filter((data) => data.hasOwnProperty('date')))
+      .subscribe((date1: CovidStats) => {
+        this.api.getByDate(previousDate).subscribe((date2: CovidStats) => {
+          const data = sortCovidStatsByDate([date1, date2], API_DATE_FORMAT);
+          this.current.next(data[0]);
+          this.previous.next(data[1]);
+        });
+      });
+  }
 }

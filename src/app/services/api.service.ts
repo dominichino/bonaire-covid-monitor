@@ -2,19 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  readonly baseUrl = 'https://bonairecovidmonitor.azurewebsites.net';
+  readonly apiUrl: string = '/api';
+  readonly apiKey: string =
+    'UraEJZBP/mpKEkib2tTGtgoJz0ByIJwkSuVDb5s96CHwlZ10xnm4FQ==';
 
-  readonly baseUrl: string = 'https://bonairecovidmonitor.azurewebsites.net/api';
-  readonly apiKey: string = 'UraEJZBP/mpKEkib2tTGtgoJz0ByIJwkSuVDb5s96CHwlZ10xnm4FQ==';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<any> {
-    const url = `${this.baseUrl}/all?code=${this.apiKey}`;
+    const url = this.createUrl(`${this.apiUrl}/all?code=${this.apiKey}`);
 
     // return this.http.get(url,  {
     //   withCredentials: true
@@ -23,22 +25,27 @@ export class ApiService {
   }
 
   getCurrent(): Observable<any> {
-    const url = `${this.baseUrl}/current?code=${this.apiKey}`;
-
+    const url = this.createUrl(`/current?code=${this.apiKey}`);
     return this.http.get(url);
   }
-
 
   // Date string as DD-MM-YYYY
   getByDate(date: string): Observable<any> {
-    const url = `${this.baseUrl}/all?date=${date}&code=${this.apiKey}`;
-
+    const url = this.createUrl(`/all?date=${date}&code=${this.apiKey}`);
     return this.http.get(url);
   }
 
-  private handleError(name: string, value: any) {
-    return of(null);
+  private createUrl(path: string) {
+    let url = `${this.apiUrl}${path}`;
+
+    if (environment.production) {
+      url = `${this.baseUrl}${url}`;
+    }
+
+    return url;
   }
+
+  // private handleError(name: string, value: any) {
+  //   return of(null);
+  // }
 }
-
-

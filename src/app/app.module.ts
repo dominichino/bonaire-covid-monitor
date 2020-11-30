@@ -1,17 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 import { SimpleComponent } from './layouts/simple/simple.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NumberCardComponent } from './components/number-card/number-card.component';
-import { HttpClientModule } from '@angular/common/http';
 import { NumberCardsComponent } from './components/number-cards/number-cards.component';
 
 @NgModule({
@@ -20,17 +27,24 @@ import { NumberCardsComponent } from './components/number-cards/number-cards.com
     SimpleComponent,
     HomeComponent,
     NumberCardComponent,
-    NumberCardsComponent
+    NumberCardsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    HttpClientModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    AppRoutingModule,
     MatToolbarModule,
-    MatCardModule
+    MatCardModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

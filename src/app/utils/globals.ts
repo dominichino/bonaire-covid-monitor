@@ -1,0 +1,3 @@
+export const API_DATE_FORMAT = 'DD MMMM YYYY';
+export const DISPLAY_DATE_FORMAT = 'DD MMMM YYYY';
+export const API_REQUEST_DATE_FORMAT = 'YYYY-MM-DD';

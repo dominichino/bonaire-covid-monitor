@@ -1,5 +1,15 @@
 .repeat-items {
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+
+.horizontal-center {
+  display: flex;
+  align-items: center;
 }

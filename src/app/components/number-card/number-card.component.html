@@ -8,7 +8,7 @@
         [class.error]="isNegative"
         class="mat-subheading-2"
       >
-        {{ item?.difference }}
+        <span *ngIf="item?.difference > 0">+</span>{{ item?.difference }}
       </span>
       since yesterday
     </span>

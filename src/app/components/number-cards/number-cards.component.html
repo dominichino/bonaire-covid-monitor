@@ -1,5 +1,8 @@
-<div class="repeat-items">
+<div class="repeat-items" *ngIf="current.date && current.date; else elseBlock">
   <ng-container *ngFor="let item of items">
     <app-number-card [item]="item"></app-number-card>
   </ng-container>
 </div>
+<ng-template #elseBlock>
+  <div class="mat-display-1 center">No data</div>
+</ng-template>

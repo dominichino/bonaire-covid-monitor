@@ -1,10 +1,34 @@
 <app-simple>
   <section>
     <h2>Covid-19 numbers</h2>
-    <div>{{ now }}</div>
+    <div class="horizontal-center">
+      <button mat-icon-button (click)="previousDate(picker)">
+        <mat-icon aria-hidden="false" aria-label="navigate to date -1"
+          >chevron_left</mat-icon
+        >
+      </button>
+      <mat-form-field class="" appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [min]="minDate"
+          [max]="maxDate"
+          [value]="date.value"
+          (dateChange)="dateChanged($event)"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button mat-icon-button (click)="nextDate()">
+        <mat-icon aria-hidden="false" aria-label="navigate to date +1"
+          >chevron_right</mat-icon
+        >
+      </button>
+    </div>
     <app-number-cards
-      [current]="current"
-      [previous]="previous"
+      [current]="current | async"
+      [previous]="previous | async"
     ></app-number-cards>
   </section>
 
@@ -24,3 +48,5 @@
     <h2>Age of deceased</h2>
   </div>
 </app-simple>
+{{ current | async | json }}
+{{ previous | async | json }}

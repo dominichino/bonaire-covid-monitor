@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NumberCard, numberCardDefault } from 'src/app/modals/number-card';
 
 @Component({
   selector: 'app-number-card',
   templateUrl: './number-card.component.html',
   styleUrls: ['./number-card.component.scss'],
 })
-export class NumberCardComponent implements OnInit {
-  @Input() item: any;
+export class NumberCardComponent {
+  @Input() item: NumberCard = numberCardDefault;
 
   get showDifference(): boolean {
     return (
@@ -16,15 +17,47 @@ export class NumberCardComponent implements OnInit {
     );
   }
 
-  constructor() {}
+  get isNegative(): boolean {
+    switch (this.item.id) {
+      case 'active':
+      case 'inHospital':
+      case 'positive':
+      case 'quarantined':
+      case 'deaths':
+        return (
+          typeof this.item.difference === 'number' && this.item.difference > 0
+        );
+      case 'recovered':
+      case 'negative':
+      case 'totalTested':
+        return (
+          typeof this.item.difference === 'number' && this.item.difference < 0
+        );
 
-  ngOnInit(): void {}
-
-  isNegative(value: number): boolean {
-    return value < 0;
+      default:
+        return false;
+    }
   }
 
-  isPositive(value: number): boolean {
-    return value > 0;
+  get isPositive(): boolean {
+    switch (this.item.id) {
+      case 'active':
+      case 'positive':
+      case 'inHospital':
+      case 'quarantined':
+      case 'deaths':
+        return (
+          typeof this.item.difference === 'number' && this.item.difference < 0
+        );
+      case 'recovered':
+      case 'negative':
+      case 'totalTested':
+        return (
+          typeof this.item.difference === 'number' && this.item.difference > 0
+        );
+
+      default:
+        return false;
+    }
   }
 }
