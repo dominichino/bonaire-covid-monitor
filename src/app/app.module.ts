@@ -21,6 +21,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { NumberCardComponent } from './components/number-card/number-card.component';
 import { NumberCardsComponent } from './components/number-cards/number-cards.component';
 import { CasesOverviewComponent } from './components/cases-overview/cases-overview.component';
+import { CasesOverTimeComponent } from './components/cases-over-time/cases-over-time.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CasesOverviewComponent } from './components/cases-overview/cases-overvi
     NumberCardComponent,
     NumberCardsComponent,
     CasesOverviewComponent,
+    CasesOverTimeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

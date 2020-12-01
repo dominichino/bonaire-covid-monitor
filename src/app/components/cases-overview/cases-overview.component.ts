@@ -66,7 +66,11 @@ export class CasesOverviewComponent implements OnInit {
       .pipe(filter((data) => data.hasOwnProperty('date')))
       .subscribe((date1: CovidStats) => {
         this.api.getByDate(previousDate).subscribe((date2: CovidStats) => {
-          const data = sortCovidStatsByDate([date1, date2], API_DATE_FORMAT);
+          const data = sortCovidStatsByDate(
+            [date1, date2],
+            API_DATE_FORMAT,
+            'date'
+          );
           this.current.next(data[0]);
           this.previous.next(data[1]);
         });

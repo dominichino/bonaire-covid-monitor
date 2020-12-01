@@ -1,0 +1,108 @@
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import Chart from 'chart.js';
+import { BehaviorSubject } from 'rxjs';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { filter, map } from 'rxjs/operators';
+import { CovidStats, covidStatsDefault } from 'src/app/modals/covid-stats';
+import { ApiService } from 'src/app/services/api.service';
+import {
+  API_DATE_FORMAT,
+  API_LAST_UPDATED_DATE_FORMAT,
+} from 'src/app/utils/globals';
+import { sortCovidStatsByDate } from 'src/app/utils/sort-by-date';
+
+@Component({
+  selector: 'app-cases-over-time',
+  templateUrl: './cases-over-time.component.html',
+  styleUrls: ['./cases-over-time.component.scss'],
+})
+export class CasesOverTimeComponent implements OnInit, AfterViewInit {
+  @ViewChild('chart') private ctx: ElementRef<HTMLCanvasElement>;
+
+  allCovidStats = new BehaviorSubject<CovidStats[]>([]);
+
+  private chart: Chart;
+
+  constructor(private api: ApiService) {}
+
+  ngOnInit(): void {
+    this.api.getAll().subscribe((data: CovidStats[]) => {
+      console.log('filtered', data);
+
+      this.allCovidStats.next(data);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    // total cases
+    this.allCovidStats.subscribe((data) => {
+      data = sortCovidStatsByDate(data, API_DATE_FORMAT, 'date', 'ascending');
+      const barLabels = this.getBarLabels(data);
+      const barData = this.getBarTotals(data);
+      this.createChartTotal(barLabels, barData);
+    });
+  }
+
+  private getBarLabels(data: CovidStats[]): string[] {
+    const barLabels = [];
+    for (const item of data) {
+      barLabels.push(item.date);
+    }
+    return barLabels;
+  }
+
+  private getBarTotals(data: CovidStats[]): string[] | number[] {
+    const barData = [];
+    for (const item of data) {
+      const tested = parseInt(item.totalTested as string) || 0;
+      const negative = parseInt(item.negative as string) || 0;
+      barData.push(tested - negative);
+    }
+    return barData;
+  }
+
+  private createChartTotal(labels, data: string[] | number[]) {
+    setTimeout(() => {
+      this.chart = null;
+      this.ctx.nativeElement.height = 300;
+      this.chart = new Chart(this.ctx.nativeElement, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Total cases',
+              data: data,
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Total cases over time',
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
+        },
+      });
+    }, 0);
+  }
+}
