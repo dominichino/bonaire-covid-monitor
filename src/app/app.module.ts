@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,6 +44,7 @@ import { DeathsComponent } from './components/deaths/deaths.component';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
+    ChartsModule,
     MatToolbarModule,
     MatCardModule,
     MatNativeDateModule,
@@ -52,7 +54,7 @@ import { DeathsComponent } from './components/deaths/deaths.component';
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [ {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

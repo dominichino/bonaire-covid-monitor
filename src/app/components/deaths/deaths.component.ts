@@ -1,22 +1,19 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  Inject,
   OnInit,
-  ViewChild,
+  PLATFORM_ID,
 } from '@angular/core';
-import Chart from 'chart.js';
 import { BehaviorSubject } from 'rxjs';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { filter, map } from 'rxjs/operators';
-import { CovidStats, covidStatsDefault } from 'src/app/modals/covid-stats';
+import { CovidStats } from 'src/app/modals/covid-stats';
 import { ApiService } from 'src/app/services/api.service';
-import {
-  API_DATE_FORMAT,
-  API_LAST_UPDATED_DATE_FORMAT,
-} from 'src/app/utils/globals';
+import { API_DATE_FORMAT } from 'src/app/utils/globals';
 import { sortCovidStatsByDate } from 'src/app/utils/sort-by-date';
 import * as dayjs from 'dayjs';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-deaths',
@@ -24,13 +21,43 @@ import * as dayjs from 'dayjs';
   styleUrls: ['./deaths.component.scss'],
 })
 export class DeathsComponent implements OnInit, AfterViewInit {
-  @ViewChild('chart') private ctx: ElementRef<HTMLCanvasElement>;
+  private allCovidStats = new BehaviorSubject<CovidStats[]>([]);
 
-  allCovidStats = new BehaviorSubject<CovidStats[]>([]);
+  public barChartOptions: ChartOptions = {
+    title: {
+      display: true,
+      text: 'Total deaths over time',
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 15,
+          },
+        },
+      ],
+    },
+  };
+  public barChartLabels: Label[] = [];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+  public barChartData: ChartDataSets[] = [];
 
-  private chart: Chart;
-
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.api.getAll().subscribe((data: CovidStats[]) => {
@@ -42,10 +69,13 @@ export class DeathsComponent implements OnInit, AfterViewInit {
     // total cases
     this.allCovidStats.subscribe((data) => {
       data = sortCovidStatsByDate(data, API_DATE_FORMAT, 'date', 'ascending');
-      const barLabels = this.getBarLabels(data);
-      const barData = this.getBarTotals(data);
-      this.createChartTotal(barLabels, barData);
+      this.barChartLabels = this.getBarLabels(data);
+      this.barChartData = [this.getBarTotals(data)];
     });
+  }
+
+  get isBrowser() {
+    return isPlatformBrowser(this.platformId);
   }
 
   private getBarLabels(data: CovidStats[]): string[] {
@@ -56,59 +86,18 @@ export class DeathsComponent implements OnInit, AfterViewInit {
     return barLabels;
   }
 
-  private getBarTotals(data: CovidStats[]): string[] | number[] {
+  private getBarTotals(data: CovidStats[]): ChartDataSets {
     const barData = [];
     for (const item of data) {
       const deaths = parseInt(item.deaths as string) || 0;
       barData.push(deaths);
     }
-    return barData;
-  }
-
-  private createChartTotal(labels, data: string[] | number[]) {
-    setTimeout(() => {
-      this.chart = null;
-      this.ctx.nativeElement.height = 300;
-      this.chart = new Chart(this.ctx.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Total cases',
-              data: data,
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'Total cases over time',
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-            xAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 15,
-                },
-              },
-            ],
-          },
-        },
-      });
-    }, 0);
+    return {
+      data: barData,
+      label: 'Total deaths',
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1,
+    };
   }
 }

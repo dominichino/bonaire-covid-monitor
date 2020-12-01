@@ -1,7 +1,14 @@
 <section>
   <div class="chart-container">
     <canvas
-      #chart
+      *ngIf="isBrowser"
+      baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [plugins]="barChartPlugins"
+      [legend]="barChartLegend"
+      [chartType]="barChartType"
       role="img"
       aria-label="Graph of total held in hospital"
     ></canvas>

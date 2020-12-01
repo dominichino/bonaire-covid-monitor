@@ -32,6 +32,7 @@
     "dayjs": "^1.9.6",
     "express": "^4.15.2",
     "material-community-components": "^10.0.0",
+    "ng2-charts": "^2.4.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
