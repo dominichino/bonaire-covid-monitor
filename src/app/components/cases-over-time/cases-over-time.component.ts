@@ -101,7 +101,6 @@ export class CasesOverTimeComponent implements OnInit, AfterViewInit {
             ],
             xAxes: [
               {
-                // type: 'time',
                 ticks: {
                   autoSkip: true,
                   maxTicksLimit: 15,

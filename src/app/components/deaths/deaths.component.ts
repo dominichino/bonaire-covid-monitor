@@ -5,20 +5,25 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { CovidStats } from 'src/app/modals/covid-stats';
-import { ApiService } from 'src/app/services/api.service';
-import { API_DATE_FORMAT } from 'src/app/utils/globals';
-import { sortCovidStatsByDate } from 'src/app/utils/sort-by-date';
 import Chart from 'chart.js';
+import { BehaviorSubject } from 'rxjs';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { filter, map } from 'rxjs/operators';
+import { CovidStats, covidStatsDefault } from 'src/app/modals/covid-stats';
+import { ApiService } from 'src/app/services/api.service';
+import {
+  API_DATE_FORMAT,
+  API_LAST_UPDATED_DATE_FORMAT,
+} from 'src/app/utils/globals';
+import { sortCovidStatsByDate } from 'src/app/utils/sort-by-date';
 import * as dayjs from 'dayjs';
 
 @Component({
-  selector: 'app-held-in-hospital',
-  templateUrl: './held-in-hospital.component.html',
-  styleUrls: ['./held-in-hospital.component.scss'],
+  selector: 'app-deaths',
+  templateUrl: './deaths.component.html',
+  styleUrls: ['./deaths.component.scss'],
 })
-export class HeldInHospitalComponent implements OnInit, AfterViewInit {
+export class DeathsComponent implements OnInit, AfterViewInit {
   @ViewChild('chart') private ctx: ElementRef<HTMLCanvasElement>;
 
   allCovidStats = new BehaviorSubject<CovidStats[]>([]);
@@ -39,8 +44,7 @@ export class HeldInHospitalComponent implements OnInit, AfterViewInit {
       data = sortCovidStatsByDate(data, API_DATE_FORMAT, 'date', 'ascending');
       const barLabels = this.getBarLabels(data);
       const barData = this.getBarTotals(data);
-
-      this.createChart(barLabels, barData);
+      this.createChartTotal(barLabels, barData);
     });
   }
 
@@ -55,13 +59,13 @@ export class HeldInHospitalComponent implements OnInit, AfterViewInit {
   private getBarTotals(data: CovidStats[]): string[] | number[] {
     const barData = [];
     for (const item of data) {
-      const inHospital = parseInt(item.inHospital as string) || 0;
-      barData.push(inHospital);
+      const deaths = parseInt(item.deaths as string) || 0;
+      barData.push(deaths);
     }
     return barData;
   }
 
-  private createChart(labels, data: string[] | number[]) {
+  private createChartTotal(labels, data: string[] | number[]) {
     setTimeout(() => {
       this.chart = null;
       this.ctx.nativeElement.height = 300;
@@ -71,7 +75,7 @@ export class HeldInHospitalComponent implements OnInit, AfterViewInit {
           labels: labels,
           datasets: [
             {
-              label: 'In hospital',
+              label: 'Total cases',
               data: data,
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
               borderColor: 'rgba(54, 162, 235, 1)',
@@ -82,7 +86,7 @@ export class HeldInHospitalComponent implements OnInit, AfterViewInit {
         options: {
           title: {
             display: true,
-            text: 'Total in hosptal over time',
+            text: 'Total cases over time',
           },
           responsive: true,
           maintainAspectRatio: false,

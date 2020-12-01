@@ -45,7 +45,23 @@ export class ApiService {
 
   getCurrent(): Observable<any> {
     const url = this.createUrl(`/current?code=${this.apiKey}`);
-    return this.http.get(url);
+    return this.http.get(url).pipe(
+      map((data: CovidStats[]) => {
+        return sortCovidStatsByDate(
+          data,
+          API_LAST_UPDATED_DATE_FORMAT,
+          'lastUpdated'
+        );
+      }),
+      map((data) => {
+        let seen = new Set();
+        const newData = data.filter((item) => {
+          return seen.has(item.date) ? false : seen.add(item.date);
+        });
+
+        return newData;
+      })
+    );
   }
 
   // Date string as DD-MM-YYYY
