@@ -20,6 +20,7 @@ import { SimpleComponent } from './layouts/simple/simple.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NumberCardComponent } from './components/number-card/number-card.component';
 import { NumberCardsComponent } from './components/number-cards/number-cards.component';
+import { CasesOverviewComponent } from './components/cases-overview/cases-overview.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { NumberCardsComponent } from './components/number-cards/number-cards.com
     HomeComponent,
     NumberCardComponent,
     NumberCardsComponent,
+    CasesOverviewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
