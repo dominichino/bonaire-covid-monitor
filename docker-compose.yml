@@ -3,6 +3,7 @@ version: "3.8"
 services:
   bonaire-covid-monitor:
     image: bonaire-covid-monitor:latest
+    container_name: bonaire-covid-monitor
     build: .
     ports:
       - "44795:44795"
