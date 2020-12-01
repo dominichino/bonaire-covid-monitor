@@ -1,7 +1,8 @@
 version: "3.8"
 
 services:
-  web:
+  bonaire-covid-monitor:
+    image: bonaire-covid-monitor:latest
     build: .
     ports:
       - "44795:44795"
