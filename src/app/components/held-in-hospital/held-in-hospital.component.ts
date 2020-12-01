@@ -5,25 +5,20 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import Chart from 'chart.js';
 import { BehaviorSubject } from 'rxjs';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { filter, map } from 'rxjs/operators';
-import { CovidStats, covidStatsDefault } from 'src/app/modals/covid-stats';
+import { CovidStats } from 'src/app/modals/covid-stats';
 import { ApiService } from 'src/app/services/api.service';
-import {
-  API_DATE_FORMAT,
-  API_LAST_UPDATED_DATE_FORMAT,
-} from 'src/app/utils/globals';
+import { API_DATE_FORMAT } from 'src/app/utils/globals';
 import { sortCovidStatsByDate } from 'src/app/utils/sort-by-date';
+import Chart from 'chart.js';
 import * as dayjs from 'dayjs';
 
 @Component({
-  selector: 'app-cases-over-time',
-  templateUrl: './cases-over-time.component.html',
-  styleUrls: ['./cases-over-time.component.scss'],
+  selector: 'app-held-in-hospital',
+  templateUrl: './held-in-hospital.component.html',
+  styleUrls: ['./held-in-hospital.component.scss'],
 })
-export class CasesOverTimeComponent implements OnInit, AfterViewInit {
+export class HeldInHospitalComponent implements OnInit, AfterViewInit {
   @ViewChild('chart') private ctx: ElementRef<HTMLCanvasElement>;
 
   allCovidStats = new BehaviorSubject<CovidStats[]>([]);
@@ -44,7 +39,11 @@ export class CasesOverTimeComponent implements OnInit, AfterViewInit {
       data = sortCovidStatsByDate(data, API_DATE_FORMAT, 'date', 'ascending');
       const barLabels = this.getBarLabels(data);
       const barData = this.getBarTotals(data);
-      this.createChartTotal(barLabels, barData);
+
+      for (const item of data) {
+        console.log(item.date, item.inHospital);
+      }
+      this.createChart(barLabels, barData);
     });
   }
 
@@ -59,24 +58,23 @@ export class CasesOverTimeComponent implements OnInit, AfterViewInit {
   private getBarTotals(data: CovidStats[]): string[] | number[] {
     const barData = [];
     for (const item of data) {
-      const tested = parseInt(item.totalTested as string) || 0;
-      const negative = parseInt(item.negative as string) || 0;
-      barData.push(tested - negative);
+      const inHospital = parseInt(item.inHospital as string) || 0;
+      barData.push(inHospital);
     }
     return barData;
   }
 
-  private createChartTotal(labels, data: string[] | number[]) {
+  private createChart(labels, data: string[] | number[]) {
     setTimeout(() => {
       this.chart = null;
       this.ctx.nativeElement.height = 300;
       this.chart = new Chart(this.ctx.nativeElement, {
-        type: 'line',
+        type: 'bar',
         data: {
           labels: labels,
           datasets: [
             {
-              label: 'Total cases',
+              label: 'In hospital',
               data: data,
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
               borderColor: 'rgba(54, 162, 235, 1)',
@@ -87,7 +85,7 @@ export class CasesOverTimeComponent implements OnInit, AfterViewInit {
         options: {
           title: {
             display: true,
-            text: 'Total cases over time',
+            text: 'Total in hosptal over time',
           },
           responsive: true,
           maintainAspectRatio: false,
@@ -101,7 +99,6 @@ export class CasesOverTimeComponent implements OnInit, AfterViewInit {
             ],
             xAxes: [
               {
-                // type: 'time',
                 ticks: {
                   autoSkip: true,
                   maxTicksLimit: 15,

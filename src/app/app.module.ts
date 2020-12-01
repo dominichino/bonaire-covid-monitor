@@ -22,6 +22,7 @@ import { NumberCardComponent } from './components/number-card/number-card.compon
 import { NumberCardsComponent } from './components/number-cards/number-cards.component';
 import { CasesOverviewComponent } from './components/cases-overview/cases-overview.component';
 import { CasesOverTimeComponent } from './components/cases-over-time/cases-over-time.component';
+import { HeldInHospitalComponent } from './components/held-in-hospital/held-in-hospital.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CasesOverTimeComponent } from './components/cases-over-time/cases-over-
     NumberCardsComponent,
     CasesOverviewComponent,
     CasesOverTimeComponent,
+    HeldInHospitalComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
