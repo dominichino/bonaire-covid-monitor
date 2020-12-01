@@ -9,6 +9,10 @@ import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 import { setCors } from 'server.cors';
 
+import { enableProdMode } from '@angular/core';
+
+enableProdMode();
+
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
