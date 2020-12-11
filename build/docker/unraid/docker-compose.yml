@@ -4,7 +4,7 @@ services:
   bonaire-covid-monitor:
     image: bonaire-covid-monitor:latest
     container_name: bonaire-covid-monitor
-    build: .
+    build: ../../../
     ports:
       - "44795:44795"
 

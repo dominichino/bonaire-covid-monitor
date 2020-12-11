@@ -5,14 +5,20 @@ import { HomeComponent } from './pages/home/home.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
-  }
+    component: HomeComponent,
+  },
+  {
+    path: '**',
+    component: HomeComponent,
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabled'
-})],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabled',
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
