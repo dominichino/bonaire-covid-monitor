@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN ls -als
-
 RUN npm install
 
 RUN npm run build:ssr
