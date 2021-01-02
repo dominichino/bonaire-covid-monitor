@@ -21,10 +21,12 @@ import { SimpleComponent } from './layouts/simple/simple.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NumberCardComponent } from './components/number-card/number-card.component';
 import { NumberCardsComponent } from './components/number-cards/number-cards.component';
+import { ActiveCasesComponent } from './components/active-cases/active-cases.component';
 import { CasesOverviewComponent } from './components/cases-overview/cases-overview.component';
 import { CasesOverTimeComponent } from './components/cases-over-time/cases-over-time.component';
 import { HeldInHospitalComponent } from './components/held-in-hospital/held-in-hospital.component';
 import { DeathsComponent } from './components/deaths/deaths.component';
+import { HistoricalDataComponent } from './components/historical-data/historical-data.component';
 
 @NgModule({
   declarations: [
@@ -33,10 +35,12 @@ import { DeathsComponent } from './components/deaths/deaths.component';
     HomeComponent,
     NumberCardComponent,
     NumberCardsComponent,
+    ActiveCasesComponent,
     CasesOverviewComponent,
     CasesOverTimeComponent,
     HeldInHospitalComponent,
     DeathsComponent,
+    HistoricalDataComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

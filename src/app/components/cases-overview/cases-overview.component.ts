@@ -56,24 +56,32 @@ export class CasesOverviewComponent implements OnInit {
   }
 
   private getNumbers(date: Date) {
-    const currentDate = dayjs(date).format(API_REQUEST_DATE_FORMAT);
-    const previousDate = dayjs(date)
-      .subtract(1, 'day')
-      .format(API_REQUEST_DATE_FORMAT);
+    // const currentDate = dayjs(date).format(API_REQUEST_DATE_FORMAT);
+    // const previousDate = dayjs(date)
+    //   .subtract(1, 'day')
+    //   .format(API_REQUEST_DATE_FORMAT);
 
+    // this.api
+    //   .getByDate(currentDate)
+    //   .pipe(filter((data) => data.hasOwnProperty('date')))
+    //   .subscribe((date1: CovidStats) => {
+    //     this.api.getByDate(previousDate).subscribe((date2: CovidStats) => {
+    //       const data = sortCovidStatsByDate(
+    //         [date1, date2],
+    //         API_DATE_FORMAT,
+    //         'date'
+    //       );
+    //       this.current.next(data[0]);
+    //       this.previous.next(data[1]);
+    //     });
+    //   });
     this.api
-      .getByDate(currentDate)
-      .pipe(filter((data) => data.hasOwnProperty('date')))
-      .subscribe((date1: CovidStats) => {
-        this.api.getByDate(previousDate).subscribe((date2: CovidStats) => {
-          const data = sortCovidStatsByDate(
-            [date1, date2],
-            API_DATE_FORMAT,
-            'date'
-          );
-          this.current.next(data[0]);
-          this.previous.next(data[1]);
-        });
+      .getCurrent()
+      //.pipe(filter((data) => data.hasOwnProperty('date')))
+      .subscribe((data: CovidStats[]) => {
+        console.log(data);
+        this.current.next(data[0]);
+        this.previous.next(data[1]);
       });
   }
 }

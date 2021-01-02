@@ -1,6 +1,11 @@
 <section>
   <h2>Covid-19 numbers</h2>
-  <div class="horizontal-center">
+  <p class="disclaimer">
+    Data only available since 13-11-2020. For more information regarding
+    COVID-19, please visit
+    <a href="https://www.bonairecrisis.com/">BonaireCrisis</a>
+  </p>
+  <!-- <div class="horizontal-center">
     <button mat-icon-button (click)="previousDate(picker)">
       <mat-icon aria-hidden="false" aria-label="navigate to date -1"
         >chevron_left</mat-icon
@@ -24,7 +29,7 @@
         >chevron_right</mat-icon
       >
     </button>
-  </div>
+  </div> -->
   <app-number-cards
     [current]="current | async"
     [previous]="previous | async"
