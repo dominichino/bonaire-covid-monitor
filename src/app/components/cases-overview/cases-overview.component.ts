@@ -79,7 +79,6 @@ export class CasesOverviewComponent implements OnInit {
       .getCurrent()
       //.pipe(filter((data) => data.hasOwnProperty('date')))
       .subscribe((data: CovidStats[]) => {
-        console.log(data);
         this.current.next(data[0]);
         this.previous.next(data[1]);
       });

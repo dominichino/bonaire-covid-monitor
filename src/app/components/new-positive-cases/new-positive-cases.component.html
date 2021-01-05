@@ -1,0 +1,17 @@
+<section>
+    <div class="chart-container">
+      <canvas
+        *ngIf="isBrowser"
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [chartType]="barChartType"
+        role="img"
+        aria-label="Graph of new positive cases over time"
+      ></canvas>
+    </div>
+  </section>
+  

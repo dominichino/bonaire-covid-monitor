@@ -22,6 +22,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { NumberCardComponent } from './components/number-card/number-card.component';
 import { NumberCardsComponent } from './components/number-cards/number-cards.component';
 import { ActiveCasesComponent } from './components/active-cases/active-cases.component';
+import { NewPositiveCasesComponent } from './components/new-positive-cases/new-positive-cases.component';
 import { CasesOverviewComponent } from './components/cases-overview/cases-overview.component';
 import { CasesOverTimeComponent } from './components/cases-over-time/cases-over-time.component';
 import { HeldInHospitalComponent } from './components/held-in-hospital/held-in-hospital.component';
@@ -36,6 +37,7 @@ import { HistoricalDataComponent } from './components/historical-data/historical
     NumberCardComponent,
     NumberCardsComponent,
     ActiveCasesComponent,
+    NewPositiveCasesComponent,
     CasesOverviewComponent,
     CasesOverTimeComponent,
     HeldInHospitalComponent,

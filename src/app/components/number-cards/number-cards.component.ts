@@ -4,7 +4,9 @@ import {
   covidStatsDefault,
   getCovidStatDisplayName,
 } from '../../modals/covid-stats';
+import * as dayjs from 'dayjs';
 import { NumberCard } from '../../modals/number-card';
+import { API_DATE_FORMAT, DISPLAY_DATE_FORMAT } from '../../utils/globals';
 
 @Component({
   selector: 'app-number-cards',
@@ -21,6 +23,7 @@ export class NumberCardsComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.current) {
+      this.current.date = dayjs(this.current.date, API_DATE_FORMAT).format(DISPLAY_DATE_FORMAT)
       this.items = [];
 
       for (const [key, value] of Object.entries(this.current)) {

@@ -55,11 +55,6 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [
-                // {
-                //   "type": "initial",
-                //   "maximumWarning": "500kb",
-                //   "maximumError": "1mb"
-                // },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
@@ -181,5 +176,8 @@
       }
     }
   },
-  "defaultProject": "bonaire-covid-monitor"
+  "defaultProject": "bonaire-covid-monitor",
+  "cli": {
+    "analytics": "0bf86636-e124-4946-8dc1-25fd5efb3bd8"
+  }
 }

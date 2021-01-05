@@ -1,3 +1,4 @@
+<p class="overview-title">Latest update: {{ current.date }}</p>
 <div class="repeat-items" *ngIf="current.date && current.date; else elseBlock">
   <ng-container *ngFor="let item of items">
     <app-number-card [item]="item"></app-number-card>
