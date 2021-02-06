@@ -16,9 +16,12 @@
 
 .disclaimer {
   font-style: italic;
-  font-size: smaller;
 }
 
 .overview-title {
-  font-weight: bold;
+  margin-top: 16px !important;
+}
+
+.v-pad {
+  padding-bottom: 16px;
 }

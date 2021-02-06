@@ -14,6 +14,8 @@ import * as dayjs from 'dayjs';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { isPlatformBrowser } from '@angular/common';
+import { map } from 'rxjs/internal/operators/map';
+import { isFormattedError } from '@angular/compiler';
 
 @Component({
   selector: 'active-cases',
@@ -26,6 +28,11 @@ export class ActiveCasesComponent implements OnInit, AfterViewInit {
     title: {
       display: true,
       text: 'Active cases over time',
+      fontSize: 24,
+      fontFamily: 'Roboto, "Helvetica Neue", sans-serif',
+      fontStyle: 'normal',
+      fontColor: '#000',
+      lineHeight: 1.6,
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -49,7 +56,7 @@ export class ActiveCasesComponent implements OnInit, AfterViewInit {
   };
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'line';
-  public barChartLegend = true;
+  public barChartLegend = false;
   public barChartPlugins = [];
   public barChartData: ChartDataSets[] = [];
 
@@ -59,9 +66,23 @@ export class ActiveCasesComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.api.getAll().subscribe((data: CovidStats[]) => {
-      this.allCovidStats.next(data);
-    });
+    this.api
+      .getAll()
+      .pipe(
+        map((data) => {
+          let seen = new Set();
+          const newData = data.filter((item) => {
+            const aWeekAgo = dayjs().subtract(14, 'day');
+            return dayjs(item.date).isAfter(aWeekAgo)
+              ? seen.add(item.date)
+              : false;
+          });
+          return newData;
+        })
+      )
+      .subscribe((data: CovidStats[]) => {
+        this.allCovidStats.next(data);
+      });
   }
 
   ngAfterViewInit(): void {

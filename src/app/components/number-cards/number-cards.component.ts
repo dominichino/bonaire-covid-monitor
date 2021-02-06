@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import {
   CovidStats,
-  covidStatsDefault,
+  covidStatsDefaultLatest,
   getCovidStatDisplayName,
 } from '../../modals/covid-stats';
 import * as dayjs from 'dayjs';
@@ -14,8 +14,8 @@ import { API_DATE_FORMAT, DISPLAY_DATE_FORMAT } from '../../utils/globals';
   styleUrls: ['./number-cards.component.scss'],
 })
 export class NumberCardsComponent implements OnChanges {
-  @Input() current: CovidStats = covidStatsDefault;
-  @Input() previous: CovidStats = covidStatsDefault;
+  @Input() current: Partial<CovidStats> = covidStatsDefaultLatest;
+  @Input() previous: Partial<CovidStats> = covidStatsDefaultLatest;
 
   items: NumberCard[] = [];
 
@@ -23,7 +23,10 @@ export class NumberCardsComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.current) {
-      this.current.date = dayjs(this.current.date, API_DATE_FORMAT).format(DISPLAY_DATE_FORMAT)
+      this.current.date = dayjs(this.current.date, API_DATE_FORMAT).format(
+        DISPLAY_DATE_FORMAT
+      );
+
       this.items = [];
 
       for (const [key, value] of Object.entries(this.current)) {

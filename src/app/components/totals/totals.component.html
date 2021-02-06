@@ -1,0 +1,39 @@
+<section>
+  <div class="center">
+    <span class="mat-headline"
+      >Total tested: {{ current?.value?.totalTested }}</span
+    >
+  </div>
+  <div class="repeat-items center v-pad">
+    <div class="center">
+      <div>
+        <span class="mat-title">{{ current?.value?.positive }}</span>
+        <span> ({{ percentPositive }}%)</span>
+      </div>
+      <div>Positive</div>
+    </div>
+    <div class="center">
+      <div>
+        <span class="mat-title">{{ current?.value?.recovered }}</span>
+        <span> ({{ percentRecovered }}%)</span>
+      </div>
+      <div>Recovered</div>
+    </div>
+  </div>
+  <div class="repeat-items center v-pad">
+    <div class="center">
+      <div>
+        <span class="mat-title">{{ current?.value?.negative }}</span>
+        <span> ({{ percentNegative }}%)</span>
+      </div>
+      <div>Negative</div>
+    </div>
+    <div class="center">
+      <div>
+        <span class="mat-title">{{ current?.value?.deaths }}</span>
+        <span> ({{ percentDeaths }}%)</span>
+      </div>
+      <div>Deaths</div>
+    </div>
+  </div>
+</section>

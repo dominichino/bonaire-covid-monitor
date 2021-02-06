@@ -38,3 +38,12 @@ export const covidStatsDefault: CovidStats = {
   quarantined: 0,
   deaths: 0,
 };
+
+export const covidStatsDefaultLatest: Partial<CovidStats> = {
+  lastUpdated: '',
+  date: '',
+  active: 0,
+  inHospital: 0,
+  quarantined: 0,
+  deaths: 0,
+};

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵExtraLocaleDataIndex } from '@angular/core';
 import {
   MatDatepicker,
   MatDatepickerInputEvent,
@@ -9,8 +9,8 @@ import * as dayjs from 'dayjs';
 import { ApiService } from '../../services/api.service';
 import { sortCovidStatsByDate } from '../..//utils/sort-by-date';
 import { API_DATE_FORMAT, API_REQUEST_DATE_FORMAT } from '../../utils/globals';
-import { CovidStats, covidStatsDefault } from '../../modals/covid-stats';
-import { filter } from 'rxjs/operators';
+import { CovidStats, covidStatsDefaultLatest } from '../../modals/covid-stats';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cases-overview',
@@ -18,8 +18,8 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./cases-overview.component.scss'],
 })
 export class CasesOverviewComponent implements OnInit {
-  current = new BehaviorSubject<CovidStats>(covidStatsDefault);
-  previous = new BehaviorSubject<CovidStats>(covidStatsDefault);
+  current = new BehaviorSubject<Partial<CovidStats>>(covidStatsDefaultLatest);
+  previous = new BehaviorSubject<Partial<CovidStats>>(covidStatsDefaultLatest);
 
   minDate = dayjs().year(2020).startOf('year').toDate();
   maxDate = dayjs().endOf('day').toDate();
@@ -77,7 +77,22 @@ export class CasesOverviewComponent implements OnInit {
     //   });
     this.api
       .getCurrent()
-      //.pipe(filter((data) => data.hasOwnProperty('date')))
+      // .pipe(filter((data) => data.hasOwnProperty('date')))
+      .pipe(
+        map((data) => {
+          const stats = [];
+          for (const item of data) {
+            let filtered = {
+              active: item.active,
+              quarantined: item.quarantined,
+              inHospital: item.inHospital,
+              deaths: item.deaths,
+            };
+            stats.push(filtered);
+          }
+          return stats;
+        })
+      )
       .subscribe((data: CovidStats[]) => {
         this.current.next(data[0]);
         this.previous.next(data[1]);

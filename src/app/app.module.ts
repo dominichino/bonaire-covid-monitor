@@ -28,6 +28,7 @@ import { CasesOverTimeComponent } from './components/cases-over-time/cases-over-
 import { HeldInHospitalComponent } from './components/held-in-hospital/held-in-hospital.component';
 import { DeathsComponent } from './components/deaths/deaths.component';
 import { HistoricalDataComponent } from './components/historical-data/historical-data.component';
+import { TotalsComponent } from './components/totals/totals.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { HistoricalDataComponent } from './components/historical-data/historical
     HeldInHospitalComponent,
     DeathsComponent,
     HistoricalDataComponent,
+    TotalsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
