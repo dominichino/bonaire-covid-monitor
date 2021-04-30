@@ -48,11 +48,6 @@ export class TotalsComponent implements OnInit {
         100
       ).toFixed(2);
 
-      this.percentRecovered = (
-        (+data.recovered / +data.positive) *
-        100
-      ).toFixed(2);
-
       this.percentDeaths = ((+data.deaths / +data.positive) * 100).toFixed(2);
     });
   }

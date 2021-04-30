@@ -84,9 +84,9 @@ export class CasesOverviewComponent implements OnInit {
           for (const item of data) {
             let filtered = {
               active: item.active,
-              quarantined: item.quarantined,
               inHospital: item.inHospital,
               deaths: item.deaths,
+              totalTested: item.totalTested
             };
             stats.push(filtered);
           }
